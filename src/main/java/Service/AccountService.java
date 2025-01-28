@@ -43,12 +43,22 @@ public class AccountService {
         return accountDAO.getAllAccounts();
     }
     /**
-     * TODO: Use the AuthorDAO to persist an author. The given Author will not have an id provided.
      *
-     * @param author an author object.
-     * @return The persisted author if the persistence is successful.
+     * @param account an account object.
+     * @return The persisted account if the insertion is successful.
      */
     public Account addAccount(Account account) {
         return accountDAO.insertAccount(account);
+    }
+
+
+    /**
+     * Checks if a account exists with the given username and password
+     *
+     * @param account an account object.
+     * @return returns account if it exists, otherwise return null
+     */
+    public Account checkLogin(Account account) {
+        return accountDAO.checkLogin(account);
     }
 }

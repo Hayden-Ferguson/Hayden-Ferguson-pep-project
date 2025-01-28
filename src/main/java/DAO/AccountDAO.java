@@ -73,4 +73,30 @@ public class AccountDAO {
         }
         return null;
     }
+
+    
+    public Account checkLogin(Account account){
+        Connection connection = ConnectionUtil.getConnection();
+        try {
+//          Write SQL logic here. You should only be inserting with the name column, so that the database may
+//          automatically generate a primary key.
+
+            String sql = "SELECT * FROM account WHERE username = ? AND password = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            //write preparedStatement's setString method here.
+            preparedStatement.setString(1, account.getUsername());
+            preparedStatement.setString(2, account.getPassword());
+            
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()){
+                int generated_account_id = (int) rs.getLong(1);
+                return new Account(generated_account_id, account.getUsername(), account.getPassword());
+            }
+            else return null;
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 }

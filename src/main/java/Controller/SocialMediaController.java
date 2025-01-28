@@ -35,6 +35,7 @@ public class SocialMediaController {
 
 
         app.post("/register", this::postAccount);
+        app.post("/login", this::login);
 
         return app;
     }
@@ -57,6 +58,19 @@ public class SocialMediaController {
             ctx.status(200);
         }else{
             ctx.status(400);
+        }
+    }
+
+
+    private void login(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
+        Account login = accountService.checkLogin(account);
+        if(login!=null){
+            ctx.json(mapper.writeValueAsString(login));
+            ctx.status(200);
+        }else{
+            ctx.status(401);
         }
     }
 
