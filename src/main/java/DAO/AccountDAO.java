@@ -32,7 +32,7 @@ public class AccountDAO {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
-                Account account = new Account(rs.getInt("id"), rs.getString("name"));
+                Account account = new Account(rs.getString("username"), rs.getString("password"));
                 accounts.add(account);
             }
         }catch(SQLException e){
@@ -52,18 +52,21 @@ public class AccountDAO {
         try {
 //          Write SQL logic here. You should only be inserting with the name column, so that the database may
 //          automatically generate a primary key.
-            String sql = "INSERT INTO account (id, name) VALUES (?, ?)";
+            if(account.getUsername().length()<1) return null;
+            if(account.getPassword().length()<4) return null;
+
+            String sql = "INSERT INTO account (username, password) VALUES (?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             //write preparedStatement's setString method here.
-            preparedStatement.setInt(1, account.getId());
-            preparedStatement.setString(2, account.getName());
+            preparedStatement.setString(1, account.getUsername());
+            preparedStatement.setString(2, account.getPassword());
             
             preparedStatement.executeUpdate();
             ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
             if(pkeyResultSet.next()){
                 int generated_account_id = (int) pkeyResultSet.getLong(1);
-                return new Account(generated_account_id, account.getName());
+                return new Account(generated_account_id, account.getUsername(), account.getPassword());
             }
         }catch(SQLException e){
             System.out.println(e.getMessage());
