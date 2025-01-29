@@ -61,4 +61,15 @@ public class AccountService {
     public Account checkLogin(Account account) {
         return accountDAO.checkLogin(account);
     }
+
+
+    /**
+     * Checks if a account exists with the given username
+     *
+     * @param account an account object.
+     * @return returns account if it exists, otherwise return null
+     */
+    public Boolean checkId(int id) {
+        return accountDAO.checkId(id);
+    }
 }

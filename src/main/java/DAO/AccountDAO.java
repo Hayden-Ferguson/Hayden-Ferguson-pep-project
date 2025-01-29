@@ -99,4 +99,28 @@ public class AccountDAO {
         }
         return null;
     }
+
+    public Boolean checkId(int id){
+        Connection connection = ConnectionUtil.getConnection();
+        try {
+//          Write SQL logic here. You should only be inserting with the name column, so that the database may
+//          automatically generate a primary key.
+
+            String sql = "SELECT * FROM account WHERE account_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            //write preparedStatement's setString method here.
+            preparedStatement.setInt(1, id);
+            
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+            else return false;
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
 }
