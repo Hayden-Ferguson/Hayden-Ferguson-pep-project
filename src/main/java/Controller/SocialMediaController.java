@@ -42,6 +42,7 @@ public class SocialMediaController {
         app.post("/login", this::login);
         app.post("/messages", this::postMessage);
         app.get("/messages", this::getAllMessages);
+        app.get("/messages/{message_id}", this::getMessageById);
 
         return app;
     }
@@ -100,6 +101,12 @@ public class SocialMediaController {
     private void getAllMessages(Context ctx) throws JsonProcessingException {
         List<Message> messages = messageService.getAllMessages();
         ctx.json(messages);
+    }
+
+    private void getMessageById(Context ctx) throws JsonProcessingException {
+        Message message = messageService.getMessageById(Integer.parseInt(ctx.pathParam("message_id")));
+        if(message!=null) ctx.json(message);
+        else ctx.json("");
     }
 
 
