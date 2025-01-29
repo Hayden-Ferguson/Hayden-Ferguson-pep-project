@@ -11,6 +11,7 @@ import io.javalin.http.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.List;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
@@ -40,6 +41,7 @@ public class SocialMediaController {
         app.post("/register", this::postAccount);
         app.post("/login", this::login);
         app.post("/messages", this::postMessage);
+        app.get("/messages", this::getAllMessages);
 
         return app;
     }
@@ -93,6 +95,11 @@ public class SocialMediaController {
             }
             else ctx.status(400);
         }else ctx.status(400);
+    }
+
+    private void getAllMessages(Context ctx) throws JsonProcessingException {
+        List<Message> messages = messageService.getAllMessages();
+        ctx.json(messages);
     }
 
 
