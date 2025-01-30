@@ -75,8 +75,11 @@ public class MessageDAO {
             String sql = "SELECT * FROM message where message_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, message_id);
+            System.out.println("before");
             ResultSet rs = preparedStatement.executeQuery();
+            System.out.println("after");
             if(rs.next()){
+                System.out.println("during?");
                 return new Message(message_id, rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
             }
         }catch(SQLException e){
