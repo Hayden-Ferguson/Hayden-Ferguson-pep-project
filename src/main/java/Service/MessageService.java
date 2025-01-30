@@ -67,4 +67,9 @@ public class MessageService {
         if (message.getMessage_text().length()<1 || message.getMessage_text().length()>255) return null;
         return messageDAO.updateMessage(message, message_id);
     }
+
+    
+    public List<Message> getMessagesByUser(int account_id) {
+        return messageDAO.getMessagesByUser(account_id);
+    }
 }

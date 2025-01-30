@@ -45,6 +45,7 @@ public class SocialMediaController {
         app.get("/messages/{message_id}", this::getMessageById);
         app.delete("/messages/{message_id}", this::deleteMessage);
         app.patch("/messages/{message_id}", this::updateMessage);
+        app.get("/accounts/{account_id}/messages", this::getMessagesByUser);
 
         return app;
     }
@@ -90,7 +91,7 @@ public class SocialMediaController {
         ObjectMapper mapper = new ObjectMapper();
         Message message = mapper.readValue(ctx.body(), Message.class);
         Boolean check = accountService.checkId(message.getPosted_by()); //May be incorrect coding practice
-        if(check){
+        if(check){  //Should be done in MessageService if possible
             Message addedMessage = messageService.addMessage(message);
             if(addedMessage!=null){
                 ctx.json(mapper.writeValueAsString(addedMessage));
@@ -127,6 +128,11 @@ public class SocialMediaController {
             ctx.status(200);
         }
         else ctx.status(400);
+    }
+
+    private void getMessagesByUser(Context ctx) throws JsonProcessingException {
+        List<Message> messages = messageService.getMessagesByUser(Integer.parseInt(ctx.pathParam("account_id")));
+        ctx.json(messages);
     }
     
 
